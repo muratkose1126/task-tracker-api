@@ -10,6 +10,11 @@ class Task extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $casts = [
+        'status' => TaskStatus::class,
+        'priority' => TaskPriority::class,
+    ];
+
     public function project()
     {
         return $this->belongsTo(Project::class);
