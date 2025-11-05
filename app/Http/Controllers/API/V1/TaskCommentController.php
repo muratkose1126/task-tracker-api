@@ -6,7 +6,7 @@ use App\Models\Task;
 use App\Models\TaskComment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\TaskCommentResource;
+use App\Http\Resources\V1\TaskCommentResource;
 
 class TaskCommentController extends Controller
 {
