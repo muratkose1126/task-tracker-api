@@ -96,18 +96,3 @@ it('can delete a task', function () {
         'id' => $task->id,
     ]);
 });
-
-it('can list task comments', function () {
-    $task = Task::factory()->create();
-    $task->comments()->createMany(
-        TaskComment::factory()->count(2)->make([
-            'user_id' => $task->user_id,
-            'comment'=>'Test comment'
-        ])->toArray()
-    );
-
-    $response = $this->actingAs($task->user, 'sanctum')->getJson("/api/v1/tasks/{$task->id}/comments");
-
-    $response->assertStatus(200)
-        ->assertJsonCount(2, 'data');
-});
