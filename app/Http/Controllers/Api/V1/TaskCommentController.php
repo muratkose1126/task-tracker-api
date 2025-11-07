@@ -15,7 +15,8 @@ class TaskCommentController extends Controller
      */
     public function index(Task $task)
     {
-        return TaskCommentResource::collection($task->comments);
+        $comments = $task->comments()->with('user')->get();
+        return TaskCommentResource::collection($comments);
     }
 
     /**
@@ -37,7 +38,7 @@ class TaskCommentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TaskComment $taskComment)
+    public function show(TaskComment $comment)
     {
         //
     }
@@ -45,7 +46,7 @@ class TaskCommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TaskComment $taskComment)
+    public function update(Request $request, TaskComment $comment)
     {
         //
     }
@@ -53,8 +54,10 @@ class TaskCommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(TaskComment $taskComment)
+    public function destroy(TaskComment $comment)
     {
-        //
+        $comment->delete();
+
+        return response()->noContent();
     }
 }
