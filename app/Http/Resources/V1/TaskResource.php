@@ -20,11 +20,17 @@ class TaskResource extends JsonResource
             'user_id' => $this->user_id,
             'title' => $this->title,
             'description' => $this->description,
-            'status' => $this->status->value,
-            'priority' => $this->priority->value,
-            'due_date' => $this->due_date,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'status' => $this->status instanceof \BackedEnum ? $this->status->value : $this->status,
+            'priority' => $this->priority instanceof \BackedEnum ? $this->priority->value : $this->priority,
+            'due_date' => $this->due_date?->toDateString(),
+            'created_at' => $this->created_at?->toISOString(),
+            'updated_at' => $this->updated_at?->toISOString(),
+            'deleted_at' => $this->deleted_at?->toISOString(),
+
+            'project' => new ProjectResource($this->whenLoaded('project')),
+            'user' => new UserResource($this->whenLoaded('user')),
+
+            'comments' => TaskCommentResource::collection($this->whenLoaded('comments')),
         ];
     }
 }
