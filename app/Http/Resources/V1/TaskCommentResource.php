@@ -18,7 +18,8 @@ class TaskCommentResource extends JsonResource
             'id' => $this->id,
             'task_id' => $this->task_id,
             'user_id' => $this->user_id,
-            'content' => $this->content,
+            'comment' => $this->comment,
+            'type' => $this->type instanceof \BackedEnum ? $this->type->value : $this->type,
             'created_at' => $this->created_at?->toISOString(),
             'updated_at' => $this->updated_at?->toISOString(),
 
