@@ -33,7 +33,7 @@ Route::prefix('v1')->as('v1.')->group(function () {
         ->middleware('auth:sanctum');
 
     Route::apiResource('tasks.comments', TaskCommentController::class)
-        ->only(['index', 'store'])
+        ->except(['show', 'update'])
         ->shallow()
         ->middleware('auth:sanctum');
 });
