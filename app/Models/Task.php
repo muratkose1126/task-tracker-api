@@ -10,9 +10,20 @@ class Task extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'project_id',
+        'user_id',
+        'title',
+        'description',
+        'status',
+        'priority',
+        'due_date',
+    ];
+
     protected $casts = [
         'status' => TaskStatus::class,
         'priority' => TaskPriority::class,
+        'due_date' => 'date',
     ];
 
     public function project()

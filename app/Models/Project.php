@@ -10,6 +10,11 @@ class Project extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        "name",
+        "description",
+    ];
+
     public function tasks()
     {
         return $this->hasMany(Task::class);

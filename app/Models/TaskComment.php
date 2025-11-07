@@ -11,6 +11,13 @@ class TaskComment extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = [
+        'task_id',
+        'user_id',
+        'content',
+        'type',
+    ];
+
     protected $casts = [
         'type' => TaskCommentType::class,
     ];
