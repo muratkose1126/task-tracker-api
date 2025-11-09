@@ -63,6 +63,58 @@ it('cannot create a comment without content', function () {
     $response->assertStatus(422);
 });
 
+it('can show a task comment', function () {
+    $task = Task::factory()->create();
+    $comment = TaskComment::factory()->create([
+        'task_id' => $task->id,
+        'user_id' => $task->user_id,
+        'comment' => 'This is a visible comment',
+        'type' => 'note',
+    ]);
+
+    $response = $this->actingAs($task->user, 'sanctum')
+        ->getJson("/api/v1/comments/{$comment->id}");
+
+    $response->assertStatus(200)
+        ->assertJson([
+            'data' => [
+                'id' => $comment->id,
+                'comment' => 'This is a visible comment',
+                'type' => 'note',
+            ],
+        ]);
+});
+
+it('can update a task comment', function () {
+    $task = Task::factory()->create();
+    $comment = TaskComment::factory()->create([
+        'task_id' => $task->id,
+        'user_id' => $task->user_id,
+        'comment' => 'Old comment',
+    ]);
+
+    $response = $this->actingAs($task->user, 'sanctum')
+        ->putJson("/api/v1/comments/{$comment->id}", [
+            'comment' => 'Updated comment',
+            'type' => 'reminder',
+        ]);
+
+    $response->assertStatus(200)
+        ->assertJson([
+            'data' => [
+                'id' => $comment->id,
+                'comment' => 'Updated comment',
+                'type' => 'reminder',
+            ],
+        ]);
+
+    $this->assertDatabaseHas('task_comments', [
+        'id' => $comment->id,
+        'comment' => 'Updated comment',
+        'type' => 'reminder',
+    ]);
+});
+
 it('can delete a task comment', function () {
     $task = Task::factory()->create();
     $comment = TaskComment::factory()->create([
