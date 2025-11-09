@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\TaskController;
 use App\Http\Controllers\Api\V1\ProjectController;
 use App\Http\Controllers\Api\V1\TaskCommentController;
+use App\Http\Controllers\Api\V1\TaskAttachmentController;
 
 Route::prefix('v1')->as('v1.')->group(function () {
 
@@ -33,6 +34,11 @@ Route::prefix('v1')->as('v1.')->group(function () {
         ->middleware('auth:sanctum');
 
     Route::apiResource('tasks.comments', TaskCommentController::class)
+        ->shallow()
+        ->middleware('auth:sanctum');
+
+    Route::apiResource('tasks.attachments', TaskAttachmentController::class)
+        ->except(['show', 'update'])
         ->shallow()
         ->middleware('auth:sanctum');
 });
