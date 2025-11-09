@@ -40,7 +40,8 @@ class TaskCommentController extends Controller
      */
     public function show(TaskComment $comment)
     {
-        //
+        $comment->load('user');
+        return new TaskCommentResource($comment);
     }
 
     /**
@@ -48,7 +49,14 @@ class TaskCommentController extends Controller
      */
     public function update(Request $request, TaskComment $comment)
     {
-        //
+        $validated = $request->validate([
+            'comment' => 'sometimes|required|string',
+            'type' => 'nullable|string',
+        ]);
+
+        $comment->update($validated);
+
+        return new TaskCommentResource($comment);
     }
 
     /**
