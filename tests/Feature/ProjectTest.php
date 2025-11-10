@@ -2,6 +2,7 @@
 
 use App\Models\User;
 use App\Models\Project;
+use App\Models\ProjectMember;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -44,6 +45,13 @@ it('can show a project', function () {
     $user = User::factory()->create();
     $project = Project::factory()->create();
 
+    // user'ı projeye owner olarak ekle
+    ProjectMember::factory()->create([
+        'project_id' => $project->id,
+        'user_id' => $user->id,
+        'role' => \App\Enums\ProjectRole::OWNER,
+    ]);
+
     $response = $this->actingAs($user, 'sanctum')->getJson("/api/v1/projects/{$project->id}");
 
     $response->assertStatus(200)
@@ -59,6 +67,13 @@ it('can show a project', function () {
 it('can update a project', function () {
     $user = User::factory()->create();
     $project = Project::factory()->create();
+
+    // user'ı projeye owner olarak ekle
+    ProjectMember::factory()->create([
+        'project_id' => $project->id,
+        'user_id' => $user->id,
+        'role' => \App\Enums\ProjectRole::OWNER,
+    ]);
 
     $response = $this->actingAs($user, 'sanctum')->putJson("/api/v1/projects/{$project->id}", [
         'name' => 'Updated Name',
@@ -83,6 +98,13 @@ it('can update a project', function () {
 it('can delete a project', function () {
     $user = User::factory()->create();
     $project = Project::factory()->create();
+
+    // user'ı projeye owner olarak ekle
+    ProjectMember::factory()->create([
+        'project_id' => $project->id,
+        'user_id' => $user->id,
+        'role' => \App\Enums\ProjectRole::OWNER,
+    ]);
 
     $response = $this->actingAs($user, 'sanctum')->deleteJson("/api/v1/projects/{$project->id}");
 
