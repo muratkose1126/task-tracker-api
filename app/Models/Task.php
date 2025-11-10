@@ -4,16 +4,19 @@ namespace App\Models;
 
 use App\Enums\TaskStatus;
 use App\Enums\TaskPriority;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Task extends Model implements HasMedia
 {
     use HasFactory, SoftDeletes;
     use InteractsWithMedia;
+    use LogsActivity;
 
     protected $fillable = [
         'project_id',
@@ -30,6 +33,15 @@ class Task extends Model implements HasMedia
         'priority' => TaskPriority::class,
         'due_date' => 'date',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('task')
+            ->logOnly(['title', 'description', 'status', 'priority', 'due_date'])
+            ->logOnlyDirty()
+            ->setDescriptionForEvent(fn (string $eventName) => $eventName);
+    }
 
     public function project()
     {
