@@ -3,13 +3,16 @@
 namespace App\Models;
 
 use App\Enums\TaskCommentType;
+use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TaskComment extends Model
 {
     use HasFactory, SoftDeletes;
+    use LogsActivity;
 
     protected $fillable = [
         'task_id',
@@ -21,6 +24,15 @@ class TaskComment extends Model
     protected $casts = [
         'type' => TaskCommentType::class,
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('task_comment')
+            ->logOnly(['comment', 'type'])
+            ->logOnlyDirty()
+            ->setDescriptionForEvent(fn (string $eventName) => $eventName);
+    }
 
     public function task()
     {
