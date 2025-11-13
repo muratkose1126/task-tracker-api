@@ -12,9 +12,17 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\V1\ProjectMemberResource;
 use App\Http\Requests\V1\StoreProjectMemberRequest;
 use App\Http\Requests\V1\UpdateProjectMemberRequest;
+use App\Services\V1\ProjectMemberService;
 
 class ProjectMemberController extends Controller
 {
+    private ProjectMemberService $projectMemberService;
+
+    public function __construct(ProjectMemberService $projectMemberService)
+    {
+        $this->projectMemberService = $projectMemberService;
+    }
+
     /**
      * Display a listing of the project members.
      */
@@ -34,7 +42,7 @@ class ProjectMemberController extends Controller
     {
         $validated = $request->validated();
 
-        $member = $project->members()->create($validated);
+        $member = $this->projectMemberService->add($project, $validated);
 
         return new ProjectMemberResource($member->load('user'));
     }
@@ -56,10 +64,9 @@ class ProjectMemberController extends Controller
     public function update(UpdateProjectMemberRequest $request, Project $project, ProjectMember $member)
     {
         abort_unless($member->project_id === $project->id, 404);
-
         $validated = $request->validated();
 
-        $member->update($validated);
+        $member = $this->projectMemberService->update($member, $validated);
 
         return new ProjectMemberResource($member->refresh()->load('user'));
     }
@@ -71,8 +78,7 @@ class ProjectMemberController extends Controller
     {
         abort_unless($member->project_id === $project->id, 404);
         Gate::authorize('delete', $project);
-
-        $member->delete();
+        $this->projectMemberService->remove($member);
 
         return response()->noContent();
     }

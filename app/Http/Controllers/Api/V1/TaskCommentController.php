@@ -9,9 +9,17 @@ use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\V1\TaskCommentResource;
 use App\Http\Requests\V1\StoreTaskCommentRequest;
 use App\Http\Requests\V1\UpdateTaskCommentRequest;
+use App\Services\V1\TaskCommentService;
 
 class TaskCommentController extends Controller
 {
+    private TaskCommentService $taskCommentService;
+
+    public function __construct(TaskCommentService $taskCommentService)
+    {
+        $this->taskCommentService = $taskCommentService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -30,7 +38,7 @@ class TaskCommentController extends Controller
     {
         $validated = $request->validated();
 
-        $comment = $task->comments()->create($validated);
+        $comment = $this->taskCommentService->create($task, $validated);
 
         return new TaskCommentResource($comment);
     }
@@ -53,7 +61,7 @@ class TaskCommentController extends Controller
     {
         $validated = $request->validated();
 
-        $comment->update($validated);
+        $comment = $this->taskCommentService->update($comment, $validated);
 
         return new TaskCommentResource($comment);
     }
@@ -64,8 +72,7 @@ class TaskCommentController extends Controller
     public function destroy(TaskComment $comment)
     {
         Gate::authorize('delete', $comment);
-
-        $comment->delete();
+        $this->taskCommentService->delete($comment);
 
         return response()->noContent();
     }

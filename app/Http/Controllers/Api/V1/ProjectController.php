@@ -9,9 +9,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\ProjectResource;
 use App\Http\Requests\V1\StoreProjectRequest;
 use App\Http\Requests\V1\UpdateProjectRequest;
+use App\Services\V1\ProjectService;
 
 class ProjectController extends Controller
 {
+    private ProjectService $projectService;
+
+    public function __construct(ProjectService $projectService)
+    {
+        $this->projectService = $projectService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -29,12 +37,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validated();
 
-        $project = Project::create($validated);
-
-        $project->members()->create([
-            'user_id' => auth()->id(),
-            'role' => ProjectRole::OWNER,
-        ]);
+        $project = $this->projectService->create($validated, $request->user());
 
         return new ProjectResource($project);
     }
@@ -56,7 +59,7 @@ class ProjectController extends Controller
     {
         $validated = $request->validated();
 
-        $project->update($validated);
+        $project = $this->projectService->update($project, $validated);
 
         return new ProjectResource($project);
     }
@@ -67,8 +70,7 @@ class ProjectController extends Controller
     public function destroy(Project $project)
     {
         Gate::authorize("delete", $project);
-
-        $project->delete();
+        $this->projectService->delete($project);
         return response()->noContent();
     }
 }

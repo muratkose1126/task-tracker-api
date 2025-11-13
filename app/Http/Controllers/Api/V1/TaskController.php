@@ -9,9 +9,17 @@ use App\Http\Resources\V1\TaskResource;
 use Illuminate\Http\Request;
 use App\Http\Requests\V1\StoreTaskRequest;
 use App\Http\Requests\V1\UpdateTaskRequest;
+use App\Services\V1\TaskService;
 
 class TaskController extends Controller
 {
+    private TaskService $taskService;
+
+    public function __construct(TaskService $taskService)
+    {
+        $this->taskService = $taskService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +41,8 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         $validated = $request->validated();
-        $task = Task::create($validated);
+
+        $task = $this->taskService->create($validated);
 
         return new TaskResource($task);
     }
@@ -54,7 +63,8 @@ class TaskController extends Controller
     public function update(UpdateTaskRequest $request, Task $task)
     {
         $validated = $request->validated();
-        $task->update($validated);
+
+        $task = $this->taskService->update($task, $validated);
 
         return new TaskResource($task);
     }
@@ -65,8 +75,7 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         Gate::authorize('delete', $task);
-
-        $task->delete();
+        $this->taskService->delete($task);
         return response()->noContent();
     }
 }
