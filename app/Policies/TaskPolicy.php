@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Task;
 use App\Models\User;
+use App\Enums\ProjectRole;
 use Illuminate\Auth\Access\Response;
 
 class TaskPolicy
@@ -21,7 +22,17 @@ class TaskPolicy
      */
     public function view(User $user, Task $task): bool
     {
-        return $task->user_id === $user->id;
+        // Owner of the task or any member of the related project can view
+        if ($task->user_id === $user->id) {
+            return true;
+        }
+
+        $project = $task->project;
+        if (! $project) {
+            return false;
+        }
+
+        return $project->members()->where('user_id', $user->id)->exists();
     }
 
     /**
@@ -37,7 +48,20 @@ class TaskPolicy
      */
     public function update(User $user, Task $task): bool
     {
-        return $task->user_id === $user->id;
+        // Task owner or project owner can update
+        if ($task->user_id === $user->id) {
+            return true;
+        }
+
+        $project = $task->project;
+        if (! $project) {
+            return false;
+        }
+
+        return $project->members()
+            ->where('user_id', $user->id)
+            ->where('role', ProjectRole::OWNER)
+            ->exists();
     }
 
     /**
@@ -45,7 +69,20 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task): bool
     {
-        return $task->user_id === $user->id;
+        // Task owner or project owner can delete
+        if ($task->user_id === $user->id) {
+            return true;
+        }
+
+        $project = $task->project;
+        if (! $project) {
+            return false;
+        }
+
+        return $project->members()
+            ->where('user_id', $user->id)
+            ->where('role', ProjectRole::OWNER)
+            ->exists();
     }
 
     /**

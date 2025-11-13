@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\TaskComment;
 use App\Models\User;
+use App\Enums\ProjectRole;
 
 class TaskCommentPolicy
 {
@@ -36,7 +37,20 @@ class TaskCommentPolicy
      */
     public function update(User $user, TaskComment $comment): bool
     {
-        return $user->id === $comment->user_id; // Sadece comment sahibi
+        // Comment sahibi veya proje sahibi comment'i güncelleyebilir
+        if ($user->id === $comment->user_id) {
+            return true;
+        }
+
+        $project = $comment->task->project;
+        if (! $project) {
+            return false;
+        }
+
+        return $project->members()
+            ->where('user_id', $user->id)
+            ->where('role', ProjectRole::OWNER)
+            ->exists();
     }
 
     /**
@@ -44,7 +58,24 @@ class TaskCommentPolicy
      */
     public function delete(User $user, TaskComment $comment): bool
     {
-        return $user->id === $comment->task->user_id || $user->id === $comment->user_id;
+        // Task sahibi, comment sahibi veya proje sahibi silebilir
+        if ($user->id === $comment->user_id) {
+            return true;
+        }
+
+        if ($user->id === $comment->task->user_id) {
+            return true;
+        }
+
+        $project = $comment->task->project;
+        if (! $project) {
+            return false;
+        }
+
+        return $project->members()
+            ->where('user_id', $user->id)
+            ->where('role', ProjectRole::OWNER)
+            ->exists();
     }
 
     /**
