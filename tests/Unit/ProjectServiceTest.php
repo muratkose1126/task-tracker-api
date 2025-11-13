@@ -1,8 +1,8 @@
 <?php
 
+use App\Enums\ProjectRole;
 use App\Models\Project;
 use App\Models\User;
-use App\Enums\ProjectRole;
 use App\Services\V1\ProjectService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -11,7 +11,7 @@ uses(RefreshDatabase::class);
 it('creates project and assigns owner', function () {
     $owner = User::factory()->create();
 
-    $service = new ProjectService();
+    $service = new ProjectService;
 
     $project = $service->create([
         'name' => 'New Project',

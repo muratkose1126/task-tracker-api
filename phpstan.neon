@@ -1,0 +1,17 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: 5
+    paths:
+        - app
+        - routes
+        - database/factories
+        - database/seeders
+    excludePaths:
+        - '*/migrations/*'
+    # Ignore some common Laravel patterns
+    ignoreErrors:
+        - '#Access to undefined constant DIRECTORY_SEPARATOR#'
+        - '#Call to an undefined method Illuminate#'
+    reportUnmatchedIgnoredErrors: false

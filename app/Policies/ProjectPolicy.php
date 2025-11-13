@@ -2,10 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\User;
-use App\Models\Project;
 use App\Enums\ProjectRole;
-use Illuminate\Auth\Access\Response;
+use App\Models\Project;
+use App\Models\User;
 
 class ProjectPolicy
 {

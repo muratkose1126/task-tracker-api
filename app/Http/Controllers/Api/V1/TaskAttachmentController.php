@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\StoreTaskAttachmentRequest;
 use App\Http\Resources\V1\MediaResource;
 use App\Models\Task;
-use App\Http\Controllers\Controller;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Support\Facades\Gate;
-use App\Http\Requests\V1\StoreTaskAttachmentRequest;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class TaskAttachmentController extends Controller
 {
@@ -16,6 +16,7 @@ class TaskAttachmentController extends Controller
         Gate::authorize('view', $task);
 
         $attachments = $task->getMedia('attachments');
+
         return MediaResource::collection($attachments);
     }
 

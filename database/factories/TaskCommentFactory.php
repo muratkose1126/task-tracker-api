@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\TaskCommentType;
 use App\Models\Task;
 use App\Models\User;
-use App\Enums\TaskCommentType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**

@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Task;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
-use App\Http\Resources\V1\TaskResource;
-use Illuminate\Http\Request;
 use App\Http\Requests\V1\StoreTaskRequest;
 use App\Http\Requests\V1\UpdateTaskRequest;
+use App\Http\Resources\V1\TaskResource;
+use App\Models\Task;
 use App\Services\V1\TaskService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TaskController extends Controller
 {
@@ -76,6 +76,7 @@ class TaskController extends Controller
     {
         Gate::authorize('delete', $task);
         $this->taskService->delete($task);
+
         return response()->noContent();
     }
 }

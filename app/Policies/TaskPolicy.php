@@ -2,10 +2,9 @@
 
 namespace App\Policies;
 
+use App\Enums\ProjectRole;
 use App\Models\Task;
 use App\Models\User;
-use App\Enums\ProjectRole;
-use Illuminate\Auth\Access\Response;
 
 class TaskPolicy
 {

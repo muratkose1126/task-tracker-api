@@ -2,9 +2,9 @@
 
 namespace App\Policies;
 
+use App\Enums\ProjectRole;
 use App\Models\TaskComment;
 use App\Models\User;
-use App\Enums\ProjectRole;
 
 class TaskCommentPolicy
 {

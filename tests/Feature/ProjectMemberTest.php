@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User;
+use App\Enums\ProjectRole;
 use App\Models\Project;
 use App\Models\ProjectMember;
-use App\Enums\ProjectRole;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);

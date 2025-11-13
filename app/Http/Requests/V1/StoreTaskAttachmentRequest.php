@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\V1;
 
-use App\Models\Task;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTaskAttachmentRequest extends FormRequest

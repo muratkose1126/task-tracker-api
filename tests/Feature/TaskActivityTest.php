@@ -13,7 +13,7 @@ it('logs task creation', function () {
 
     $task = Task::factory()->create([
         'user_id' => $user->id,
-        'title' => 'Test Task'
+        'title' => 'Test Task',
     ]);
 
     $this->assertDatabaseHas('activity_log', [
@@ -21,7 +21,7 @@ it('logs task creation', function () {
         'subject_id' => $task->id,
         'causer_id' => $user->id,
         'log_name' => 'task',
-        'description' => 'created'
+        'description' => 'created',
     ]);
 });
 
@@ -38,7 +38,7 @@ it('logs task updates', function () {
         'subject_id' => $task->id,
         'causer_id' => $user->id,
         'log_name' => 'task',
-        'description' => 'updated'
+        'description' => 'updated',
     ]);
 });
 
@@ -57,6 +57,6 @@ it('logs task soft deletes', function () {
         'subject_id' => $task->id,
         'causer_id' => $user->id,
         'log_name' => 'task',
-        'description' => 'deleted'
+        'description' => 'deleted',
     ]);
 });

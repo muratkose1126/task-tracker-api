@@ -15,6 +15,7 @@ class TaskCommentService
     public function update(TaskComment $comment, array $data): TaskComment
     {
         $comment->update($data);
+
         return $comment;
     }
 

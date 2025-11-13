@@ -1,8 +1,8 @@
 <?php
 
-use App\Models\User;
 use App\Models\Task;
 use App\Models\TaskComment;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -16,7 +16,7 @@ it('logs task comment creation', function () {
     $comment = TaskComment::factory()->create([
         'task_id' => $task->id,
         'user_id' => $user->id,
-        'comment' => 'Test comment'
+        'comment' => 'Test comment',
     ]);
 
     $this->assertDatabaseHas('activity_log', [
@@ -24,7 +24,7 @@ it('logs task comment creation', function () {
         'subject_id' => $comment->id,
         'causer_id' => $user->id,
         'log_name' => 'task_comment',
-        'description' => 'created'
+        'description' => 'created',
     ]);
 });
 
@@ -34,7 +34,7 @@ it('logs task comment updates', function () {
     $comment = TaskComment::factory()->create([
         'task_id' => $task->id,
         'user_id' => $user->id,
-        'comment' => 'Initial comment'
+        'comment' => 'Initial comment',
     ]);
 
     $this->actingAs($user, 'sanctum');
@@ -46,7 +46,7 @@ it('logs task comment updates', function () {
         'subject_id' => $comment->id,
         'causer_id' => $user->id,
         'log_name' => 'task_comment',
-        'description' => 'updated'
+        'description' => 'updated',
     ]);
 });
 
@@ -56,7 +56,7 @@ it('logs task comment soft deletes', function () {
     $comment = TaskComment::factory()->create([
         'task_id' => $task->id,
         'user_id' => $user->id,
-        'comment' => 'Test comment'
+        'comment' => 'Test comment',
     ]);
 
     $this->actingAs($user, 'sanctum');
@@ -70,6 +70,6 @@ it('logs task comment soft deletes', function () {
         'subject_id' => $comment->id,
         'causer_id' => $user->id,
         'log_name' => 'task_comment',
-        'description' => 'deleted'
+        'description' => 'deleted',
     ]);
 });

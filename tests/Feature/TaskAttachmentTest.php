@@ -41,8 +41,8 @@ it('can upload an attachment to a task', function () {
                 'file_name',
                 'mime_type',
                 'size',
-                'url'
-            ]
+                'url',
+            ],
         ]);
 
     $this->assertDatabaseHas('media', [

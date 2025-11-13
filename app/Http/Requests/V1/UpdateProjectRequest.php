@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\V1;
 
-use App\Models\Project;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProjectRequest extends FormRequest

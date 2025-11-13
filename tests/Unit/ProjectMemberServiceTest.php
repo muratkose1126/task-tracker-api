@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\Project;
-use App\Models\User;
-use App\Models\ProjectMember;
 use App\Enums\ProjectRole;
+use App\Models\Project;
+use App\Models\ProjectMember;
+use App\Models\User;
 use App\Services\V1\ProjectMemberService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -13,7 +13,7 @@ it('adds, updates and removes project member', function () {
     $owner = User::factory()->create();
     $project = Project::factory()->create();
 
-    $service = new ProjectMemberService();
+    $service = new ProjectMemberService;
 
     $member = $service->add($project, [
         'user_id' => $owner->id,

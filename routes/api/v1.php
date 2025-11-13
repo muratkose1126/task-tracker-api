@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
-use App\Http\Controllers\Api\V1\TaskController;
 use App\Http\Controllers\Api\V1\ProjectController;
-use App\Http\Controllers\Api\V1\TaskCommentController;
 use App\Http\Controllers\Api\V1\ProjectMemberController;
 use App\Http\Controllers\Api\V1\TaskAttachmentController;
+use App\Http\Controllers\Api\V1\TaskCommentController;
+use App\Http\Controllers\Api\V1\TaskController;
+use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->as('v1.')->group(function () {
 

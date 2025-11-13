@@ -1,9 +1,9 @@
 <?php
 
+use App\Models\Project;
 use App\Models\Task;
 use App\Models\TaskComment;
 use App\Models\User;
-use App\Models\Project;
 use App\Services\V1\TaskCommentService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -17,7 +17,7 @@ it('creates, updates and deletes a task comment', function () {
         'user_id' => $user->id,
     ]);
 
-    $service = new TaskCommentService();
+    $service = new TaskCommentService;
 
     $comment = $service->create($task, [
         'user_id' => $user->id,

@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Project;
-use App\Enums\ProjectRole;
-use Illuminate\Http\Request;
-use App\Models\ProjectMember;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
-use App\Http\Resources\V1\ProjectMemberResource;
 use App\Http\Requests\V1\StoreProjectMemberRequest;
 use App\Http\Requests\V1\UpdateProjectMemberRequest;
+use App\Http\Resources\V1\ProjectMemberResource;
+use App\Models\Project;
+use App\Models\ProjectMember;
 use App\Services\V1\ProjectMemberService;
+use Illuminate\Support\Facades\Gate;
 
 class ProjectMemberController extends Controller
 {

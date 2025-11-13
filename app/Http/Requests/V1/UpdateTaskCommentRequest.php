@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\V1;
 
-use App\Models\TaskComment;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTaskCommentRequest extends FormRequest

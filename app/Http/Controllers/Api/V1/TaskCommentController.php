@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Task;
-use App\Models\TaskComment;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Gate;
-use App\Http\Resources\V1\TaskCommentResource;
 use App\Http\Requests\V1\StoreTaskCommentRequest;
 use App\Http\Requests\V1\UpdateTaskCommentRequest;
+use App\Http\Resources\V1\TaskCommentResource;
+use App\Models\Task;
+use App\Models\TaskComment;
 use App\Services\V1\TaskCommentService;
+use Illuminate\Support\Facades\Gate;
 
 class TaskCommentController extends Controller
 {
@@ -28,6 +28,7 @@ class TaskCommentController extends Controller
         Gate::authorize('viewAny', TaskComment::class);
 
         $comments = $task->comments()->with('user')->get();
+
         return TaskCommentResource::collection($comments);
     }
 
@@ -51,6 +52,7 @@ class TaskCommentController extends Controller
         Gate::authorize('view', $comment);
 
         $comment->load('user');
+
         return new TaskCommentResource($comment);
     }
 

@@ -26,7 +26,7 @@ it('can register a new user', function () {
         ]);
 
     $this->assertDatabaseHas('users', [
-        'email' => 'test@example.com'
+        'email' => 'test@example.com',
     ]);
 });
 
@@ -80,6 +80,6 @@ it('can get authenticated user info', function () {
                 'email',
                 'created_at',
                 'updated_at',
-            ]
+            ],
         ]);
 });

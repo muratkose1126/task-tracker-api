@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Project;
-use App\Enums\ProjectRole;
-use Gate;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\ProjectResource;
 use App\Http\Requests\V1\StoreProjectRequest;
 use App\Http\Requests\V1\UpdateProjectRequest;
+use App\Http\Resources\V1\ProjectResource;
+use App\Models\Project;
 use App\Services\V1\ProjectService;
+use Gate;
 
 class ProjectController extends Controller
 {
@@ -25,7 +24,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        Gate::authorize("viewAny", Project::class);
+        Gate::authorize('viewAny', Project::class);
 
         return ProjectResource::collection(Project::all());
     }
@@ -47,7 +46,7 @@ class ProjectController extends Controller
      */
     public function show(Project $project)
     {
-        Gate::authorize("view", $project);
+        Gate::authorize('view', $project);
 
         return new ProjectResource($project);
     }
@@ -69,9 +68,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        Gate::authorize("delete", $project);
+        Gate::authorize('delete', $project);
         $this->projectService->delete($project);
+
         return response()->noContent();
     }
 }
-

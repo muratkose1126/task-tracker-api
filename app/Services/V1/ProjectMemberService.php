@@ -15,6 +15,7 @@ class ProjectMemberService
     public function update(ProjectMember $member, array $data): ProjectMember
     {
         $member->update($data);
+
         return $member;
     }
 

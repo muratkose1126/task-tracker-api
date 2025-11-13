@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Task;
 use App\Models\Project;
+use App\Models\Task;
 use App\Models\User;
 use App\Services\V1\TaskService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -12,7 +12,7 @@ it('creates, updates and deletes a task', function () {
     $user = User::factory()->create();
     $project = Project::factory()->create();
 
-    $service = new TaskService();
+    $service = new TaskService;
 
     $task = $service->create([
         'project_id' => $project->id,
