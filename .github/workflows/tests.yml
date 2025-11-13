@@ -63,10 +63,3 @@ jobs:
           DB_DATABASE: task_tracker_test
           DB_USERNAME: root
           DB_PASSWORD: root
-
-      - name: Upload coverage
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: storage/logs/
