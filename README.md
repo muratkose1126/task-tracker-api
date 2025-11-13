@@ -1,11 +1,176 @@
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+# Task Tracker API
+
+A comprehensive task tracking REST API built with Laravel, featuring project management, task workflows, and real-time collaboration.
+
+## Features
+
+- 👥 User authentication (Sanctum)
+- 📋 Project management with roles
+- ✅ Task management (CRUD, status, priority)
+- 💬 Task comments and activity logging
+- 📎 File attachments (Spatie Media Library)
+- 🔐 Policy-based authorization
+- 📖 OpenAPI/Swagger documentation
+- ✨ Code quality (Pint + PHPStan)
+- 🧪 Comprehensive test coverage (48+ tests)
+
+## Development Setup
+
+### Prerequisites
+
+- Docker & Docker Compose (recommended)
+- PHP 8.3+ (if running locally)
+- MySQL 8.0+
+- Composer
+
+### Quick Start with Docker
+
+```bash
+# Clone and setup
+git clone https://github.com/muratkose1126/task-tracker-api.git
+cd task-tracker-api
+
+# Build and start containers
+docker-compose up -d
+
+# Install dependencies (inside container)
+docker exec -it workspace bash
+composer install
+
+# Setup database
+php artisan migrate
+
+# Generate API documentation
+php artisan l5-swagger:generate
+
+# Run tests
+php artisan test
+```
+
+### Local Development (with Docker containers)
+
+**Important:** All project commands should be run inside Docker for consistency.
+
+```bash
+# All commands inside the workspace container
+docker exec -it <container-id> bash
+
+# Then run:
+composer install
+php artisan migrate
+php artisan test
+./vendor/bin/pint
+./vendor/bin/phpstan analyse
+```
+
+### Available Commands
+
+```bash
+# Testing
+php artisan test                    # Run all tests
+php artisan test tests/Unit         # Run unit tests only
+php artisan test tests/Feature      # Run feature tests only
+
+# Code Quality
+./vendor/bin/pint                   # Auto-fix code style
+./vendor/bin/pint --test           # Check code style only
+./vendor/bin/phpstan analyse       # Static analysis
+
+# Database
+php artisan migrate                 # Run migrations
+php artisan db:seed                # Seed database
+php artisan tinker                 # Interactive shell
+
+# API
+php artisan l5-swagger:generate    # Generate API docs
+```
+
+## API Documentation
+
+Access the API documentation at:
+- **Local**: `http://localhost/api/docs`
+- **OpenAPI Spec**: `/storage/api-docs.yaml`
+
+## Project Structure
+
+```
+app/
+├── Http/
+│   ├── Controllers/Api/V1/    # API endpoints
+│   ├── Requests/V1/           # Form requests (validation)
+│   ├── Resources/V1/          # API resources (responses)
+├── Models/                     # Eloquent models
+├── Policies/                   # Authorization policies
+├── Services/V1/                # Business logic layer
+├── Enums/                      # Project enums
+
+database/
+├── factories/                  # Model factories
+├── migrations/                 # Database schema
+├── seeders/                    # Database seeders
+
+tests/
+├── Feature/                    # Feature tests
+├── Unit/                       # Unit tests
+```
+
+## Architecture
+
+### Design Patterns
+
+- **Service Layer**: Business logic separated from controllers
+- **FormRequest**: Centralized validation & authorization
+- **Policies**: Fine-grained authorization
+- **Resources**: Consistent API responses
+- **Factory States**: Flexible test data generation
+
+### Database Models
+
+- **User**: User accounts
+- **Project**: Project management
+- **ProjectMember**: Role-based project membership
+- **Task**: Task management
+- **TaskComment**: Task discussions
+- **Media**: File attachments
+
+## Testing
+
+```bash
+# Run all tests
+php artisan test
+
+# Run with coverage
+php artisan test --coverage
+
+# Run specific test file
+php artisan test tests/Feature/TaskTest.php
+
+# Run specific test
+php artisan test --filter="it can create a new task"
+```
+
+## CI/CD
+
+GitHub Actions automatically runs:
+- All tests (Feature + Unit)
+- Pint code style checks
+- PHPStan static analysis
+
+Status badge: [Actions](https://github.com/muratkose1126/task-tracker-api/actions)
+
+## Contributing
+
+1. Create a feature branch: `git checkout -b feature/something`
+2. Make your changes
+3. Run tests and style checks
+4. Commit: `git commit -am 'feat: add something'`
+5. Push and create a PR
+
+## License
+
+This project is open-source software licensed under the MIT license.
 
 ## About Laravel
 
