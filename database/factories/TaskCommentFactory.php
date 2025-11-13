@@ -26,4 +26,36 @@ class TaskCommentFactory extends Factory
             'type' => TaskCommentType::NOTE,
         ];
     }
+
+    /**
+     * State for a comment with a specific type.
+     */
+    public function ofType(TaskCommentType $type): static
+    {
+        return $this->state(['type' => $type]);
+    }
+
+    /**
+     * State for a comment on a specific task.
+     */
+    public function forTask(Task $task): static
+    {
+        return $this->state(['task_id' => $task->id]);
+    }
+
+    /**
+     * State for a comment by a specific user.
+     */
+    public function byUser(User $user): static
+    {
+        return $this->state(['user_id' => $user->id]);
+    }
+
+    /**
+     * State for a detailed comment.
+     */
+    public function detailed(): static
+    {
+        return $this->state(['comment' => $this->faker->paragraph()]);
+    }
 }

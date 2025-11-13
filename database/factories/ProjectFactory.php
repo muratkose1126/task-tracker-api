@@ -17,8 +17,26 @@ class ProjectFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->sentence(3),
+            'name' => $this->faker->words(3, true),
             'description' => $this->faker->paragraph(),
         ];
+    }
+
+    /**
+     * State for a project with a specific name.
+     */
+    public function withName(string $name): static
+    {
+        return $this->state(['name' => $name]);
+    }
+
+    /**
+     * State for a complete project with detailed description.
+     */
+    public function detailed(): static
+    {
+        return $this->state([
+            'description' => $this->faker->paragraphs(3, true),
+        ]);
     }
 }
