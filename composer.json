@@ -17,7 +17,6 @@
         "spatie/laravel-medialibrary": "^11.17"
     },
     "require-dev": {
-        "darkaonline/l5-swagger": "*",
         "fakerphp/faker": "^1.23",
         "larastan/larastan": "*",
         "laravel/boost": "^1.6",
