@@ -5,9 +5,10 @@ namespace App\Http\Controllers\Api\V1;
 use App\Models\Project;
 use App\Enums\ProjectRole;
 use Gate;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\ProjectResource;
+use App\Http\Requests\V1\StoreProjectRequest;
+use App\Http\Requests\V1\UpdateProjectRequest;
 
 class ProjectController extends Controller
 {
@@ -24,15 +25,9 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProjectRequest $request)
     {
-        Gate::authorize("create", Project::class);
-
-
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
+        $validated = $request->validated();
 
         $project = Project::create($validated);
 
@@ -57,14 +52,9 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(UpdateProjectRequest $request, Project $project)
     {
-        Gate::authorize("update", $project);
-
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
+        $validated = $request->validated();
 
         $project->update($validated);
 
@@ -82,3 +72,4 @@ class ProjectController extends Controller
         return response()->noContent();
     }
 }
+

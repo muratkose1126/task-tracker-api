@@ -10,6 +10,8 @@ use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\V1\ProjectMemberResource;
+use App\Http\Requests\V1\StoreProjectMemberRequest;
+use App\Http\Requests\V1\UpdateProjectMemberRequest;
 
 class ProjectMemberController extends Controller
 {
@@ -28,14 +30,9 @@ class ProjectMemberController extends Controller
     /**
      * Store a newly created member in the project.
      */
-    public function store(Request $request, Project $project)
+    public function store(StoreProjectMemberRequest $request, Project $project)
     {
-        Gate::authorize('update', $project);
-
-        $validated = $request->validate([
-            'user_id' => ['required', 'exists:users,id'],
-            'role' => ['required', Rule::in(ProjectRole::values())],
-        ]);
+        $validated = $request->validated();
 
         $member = $project->members()->create($validated);
 
@@ -56,14 +53,11 @@ class ProjectMemberController extends Controller
     /**
      * Update the specified member in the project.
      */
-    public function update(Request $request, Project $project, ProjectMember $member)
+    public function update(UpdateProjectMemberRequest $request, Project $project, ProjectMember $member)
     {
         abort_unless($member->project_id === $project->id, 404);
-        Gate::authorize('update', $project);
 
-        $validated = $request->validate([
-            'role' => ['required', Rule::in(ProjectRole::values())],
-        ]);
+        $validated = $request->validated();
 
         $member->update($validated);
 

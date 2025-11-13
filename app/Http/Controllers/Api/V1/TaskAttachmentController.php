@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Resources\V1\MediaResource;
 use App\Models\Task;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Requests\V1\StoreTaskAttachmentRequest;
 
 class TaskAttachmentController extends Controller
 {
@@ -19,14 +19,8 @@ class TaskAttachmentController extends Controller
         return MediaResource::collection($attachments);
     }
 
-    public function store(Request $request, Task $task)
+    public function store(StoreTaskAttachmentRequest $request, Task $task)
     {
-        Gate::authorize('update', $task);
-
-        $request->validate([
-            'file' => 'required|file|max:10240',
-        ]);
-
         $media = $task
             ->addMediaFromRequest('file')
             ->toMediaCollection('attachments');

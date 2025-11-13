@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Task;
 use App\Models\TaskComment;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\V1\TaskCommentResource;
+use App\Http\Requests\V1\StoreTaskCommentRequest;
+use App\Http\Requests\V1\UpdateTaskCommentRequest;
 
 class TaskCommentController extends Controller
 {
@@ -25,15 +26,9 @@ class TaskCommentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Task $task)
+    public function store(StoreTaskCommentRequest $request, Task $task)
     {
-        Gate::authorize('create', TaskComment::class);
-
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'comment' => 'required|string',
-            'type' => 'nullable|string',
-        ]);
+        $validated = $request->validated();
 
         $comment = $task->comments()->create($validated);
 
@@ -54,14 +49,9 @@ class TaskCommentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, TaskComment $comment)
+    public function update(UpdateTaskCommentRequest $request, TaskComment $comment)
     {
-        Gate::authorize('update', $comment);
-
-        $validated = $request->validate([
-            'comment' => 'sometimes|required|string',
-            'type' => 'nullable|string',
-        ]);
+        $validated = $request->validated();
 
         $comment->update($validated);
 

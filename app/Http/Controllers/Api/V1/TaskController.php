@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Task;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Gate;
 use App\Http\Resources\V1\TaskResource;
+use Illuminate\Http\Request;
+use App\Http\Requests\V1\StoreTaskRequest;
+use App\Http\Requests\V1\UpdateTaskRequest;
 
 class TaskController extends Controller
 {
@@ -28,20 +30,9 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
-        Gate::authorize('create', Task::class);
-
-        $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'user_id' => 'required|exists:users,id',
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'nullable|string',
-            'priority' => 'nullable|string',
-            'due_date' => 'nullable|date',
-        ]);
-
+        $validated = $request->validated();
         $task = Task::create($validated);
 
         return new TaskResource($task);
@@ -60,18 +51,9 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
-        Gate::authorize('update', $task);
-
-        $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'nullable|string',
-            'priority' => 'nullable|string',
-            'due_date' => 'nullable|date',
-        ]);
-
+        $validated = $request->validated();
         $task->update($validated);
 
         return new TaskResource($task);
