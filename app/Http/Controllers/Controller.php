@@ -14,7 +14,6 @@
  *     url="http://localhost/api/v1",
  *     description="Local Development Server"
  * )
- *
  * @OA\Server(
  *     url="https://api.example.com/v1",
  *     description="Production Server"

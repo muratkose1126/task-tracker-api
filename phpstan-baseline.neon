@@ -347,3 +347,39 @@ parameters:
 			identifier: staticMethod.notFound
 			count: 1
 			path: app/Services/V1/TaskService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Project\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/factories/ProjectMemberFactory.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/factories/ProjectMemberFactory.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Task\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/factories/TaskCommentFactory.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/factories/TaskCommentFactory.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Project\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/factories/TaskFactory.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: database/factories/TaskFactory.php
