@@ -2,112 +2,116 @@
 
 # Task Tracker API
 
-A comprehensive task tracking REST API built with Laravel, featuring project management, task workflows, and real-time collaboration.
+A comprehensive task tracking REST API built with Laravel, featuring project management, task workflows, and role-based access control.
 
-## Features
+## ✨ Features
 
-- 👥 User authentication (Sanctum)
-- 📋 Project management with roles
-- ✅ Task management (CRUD, status, priority)
-- 💬 Task comments and activity logging
-- 📎 File attachments (Spatie Media Library)
-- 🔐 Policy-based authorization
-- 📖 OpenAPI/Swagger documentation
-- ✨ Code quality (Pint + PHPStan)
-- 🧪 Comprehensive test coverage (48+ tests)
+- 👥 **User Authentication** - Token-based auth with Laravel Sanctum
+- 📋 **Project Management** - Create and manage projects with role-based members
+- ✅ **Task Management** - Full CRUD operations with priority levels and status tracking
+- 💬 **Task Comments** - Collaborative discussions with activity logging
+- 📎 **File Attachments** - Upload files with Spatie Media Library
+- 🔐 **Authorization** - Policy-based access control
+- � **Activity Tracking** - Spatie Activity Log integration
+- ✨ **Code Quality** - Automated checks with Pint & PHPStan
+- 🧪 **Test Coverage** - 48+ comprehensive tests
 
-## Development Setup
+## 🚀 Quick Start
 
-### Prerequisites
+### Requirements
 
-- Docker & Docker Compose (recommended)
-- PHP 8.3+ (if running locally)
-- MySQL 8.0+
-- Composer
+- **PHP** 8.3 or higher
+- **MySQL** 8.0 or higher
+- **Composer** 2.0 or higher
 
-### Quick Start with Docker
+### Installation
 
 ```bash
-# Clone and setup
+# Clone the repository
 git clone https://github.com/muratkose1126/task-tracker-api.git
 cd task-tracker-api
 
-# Build and start containers
-docker-compose up -d
-
-# Install dependencies (inside container)
-docker exec -it workspace bash
+# Install dependencies
 composer install
 
-# Setup database
+# Setup environment
+cp .env.example .env
+php artisan key:generate
+
+# Configure your database in .env file
+# DB_CONNECTION=mysql
+# DB_HOST=127.0.0.1
+# DB_DATABASE=task_tracker
+# DB_USERNAME=root
+# DB_PASSWORD=
+
+# Run migrations
 php artisan migrate
 
-# Generate API documentation
-php artisan l5-swagger:generate
-
-# Run tests
-php artisan test
+# Optional: Seed sample data
+php artisan db:seed
 ```
 
-### Local Development (with Docker containers)
-
-**Important:** All project commands should be run inside Docker for consistency.
+### Verification
 
 ```bash
-# All commands inside the workspace container
-docker exec -it <container-id> bash
-
-# Then run:
-composer install
-php artisan migrate
+# Run tests
 php artisan test
-./vendor/bin/pint
+
+# Check code style
+./vendor/bin/pint --test
+
+# Run static analysis
 ./vendor/bin/phpstan analyse
 ```
 
-### Available Commands
+## 📖 Available Commands
+
+### Testing & Quality
 
 ```bash
-# Testing
 php artisan test                    # Run all tests
-php artisan test tests/Unit         # Run unit tests only
-php artisan test tests/Feature      # Run feature tests only
+php artisan test tests/Feature      # Run feature tests
+php artisan test tests/Unit         # Run unit tests
+php artisan test --coverage         # Generate coverage report
 
-# Code Quality
 ./vendor/bin/pint                   # Auto-fix code style
 ./vendor/bin/pint --test           # Check code style only
-./vendor/bin/phpstan analyse       # Static analysis
-
-# Database
-php artisan migrate                 # Run migrations
-php artisan db:seed                # Seed database
-php artisan tinker                 # Interactive shell
-
-# API
-php artisan l5-swagger:generate    # Generate API docs
+./vendor/bin/phpstan analyse       # Static type analysis
 ```
 
-## API Documentation
+### Database
 
-Access the API documentation at:
-- **Local**: `http://localhost/api/docs`
-- **OpenAPI Spec**: `/storage/api-docs.yaml`
+```bash
+php artisan migrate                 # Run migrations
+php artisan migrate:rollback        # Rollback migrations
+php artisan db:seed                # Seed database
+php artisan tinker                 # Interactive shell
+```
 
-## Project Structure
+### Development
+
+```bash
+php artisan serve                   # Start development server (http://localhost:8000)
+php artisan cache:clear            # Clear application cache
+php artisan config:clear           # Clear config cache
+```
+
+## 📁 Project Structure
 
 ```
 app/
 ├── Http/
 │   ├── Controllers/Api/V1/    # API endpoints
-│   ├── Requests/V1/           # Form requests (validation)
-│   ├── Resources/V1/          # API resources (responses)
+│   ├── Requests/V1/           # Form requests & validation
+│   ├── Resources/V1/          # API resource responses
 ├── Models/                     # Eloquent models
 ├── Policies/                   # Authorization policies
 ├── Services/V1/                # Business logic layer
 ├── Enums/                      # Project enums
 
 database/
-├── factories/                  # Model factories
+├── factories/                  # Model factories for testing
 ├── migrations/                 # Database schema
 ├── seeders/                    # Database seeders
 
@@ -116,87 +120,142 @@ tests/
 ├── Unit/                       # Unit tests
 ```
 
-## Architecture
+## 🏗️ Architecture
 
 ### Design Patterns
 
-- **Service Layer**: Business logic separated from controllers
-- **FormRequest**: Centralized validation & authorization
-- **Policies**: Fine-grained authorization
-- **Resources**: Consistent API responses
-- **Factory States**: Flexible test data generation
+- **Service Layer Pattern** - Business logic separated from controllers
+- **FormRequest Validation** - Centralized request validation & authorization
+- **Policy Authorization** - Fine-grained access control
+- **API Resources** - Consistent and transformable API responses
+- **Factory States** - Flexible test data generation
 
 ### Database Models
 
-- **User**: User accounts
-- **Project**: Project management
-- **ProjectMember**: Role-based project membership
-- **Task**: Task management
-- **TaskComment**: Task discussions
-- **Media**: File attachments
+| Model | Purpose |
+|-------|---------|
+| **User** | User accounts and authentication |
+| **Project** | Project containers |
+| **ProjectMember** | Project membership with roles |
+| **Task** | Task items with status and priority |
+| **TaskComment** | Task discussions and interactions |
+| **Media** | File attachments |
 
-## Testing
+## 🧪 Testing
 
 ```bash
-# Run all tests
+# Run all tests with output
 php artisan test
 
-# Run with coverage
+# Run with coverage report
 php artisan test --coverage
 
 # Run specific test file
-php artisan test tests/Feature/TaskTest.php
+php artisan test tests/Feature/Api/V1/TaskTest.php
 
-# Run specific test
-php artisan test --filter="it can create a new task"
+# Run test with name filter
+php artisan test --filter="it_can_create_a_task"
+
+# Run in parallel (faster)
+php artisan test --parallel
 ```
 
-## CI/CD
+### Test Coverage
 
-GitHub Actions automatically runs:
-- All tests (Feature + Unit)
-- Pint code style checks
-- PHPStan static analysis
+- 48+ tests covering features and units
+- Feature tests for all API endpoints
+- Unit tests for services and models
 
-Status badge: [Actions](https://github.com/muratkose1126/task-tracker-api/actions)
+## 🔄 CI/CD Pipeline
 
-## Contributing
+GitHub Actions automatically validates every push and pull request:
 
-1. Create a feature branch: `git checkout -b feature/something`
-2. Make your changes
-3. Run tests and style checks
-4. Commit: `git commit -am 'feat: add something'`
-5. Push and create a PR
+- ✅ Unit & Feature Tests
+- 🎨 Code Style (Pint)
+- 📊 Static Analysis (PHPStan)
 
-## License
+View the workflow: [`.github/workflows/tests.yml`](.github/workflows/tests.yml)
 
-This project is open-source software licensed under the MIT license.
+## 📝 API Endpoints
 
-## About Laravel
+### Authentication
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```
+POST   /api/v1/auth/register      # Register new user
+POST   /api/v1/auth/login         # Login
+POST   /api/v1/auth/logout        # Logout
+POST   /api/v1/auth/me            # Get current user
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Projects
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+```
+GET    /api/v1/projects           # List projects
+POST   /api/v1/projects           # Create project
+GET    /api/v1/projects/{id}      # Get project
+PUT    /api/v1/projects/{id}      # Update project
+DELETE /api/v1/projects/{id}      # Delete project
+```
 
-## Learning Laravel
+### Tasks
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+```
+GET    /api/v1/projects/{id}/tasks        # List project tasks
+POST   /api/v1/projects/{id}/tasks        # Create task
+GET    /api/v1/tasks/{id}                 # Get task
+PUT    /api/v1/tasks/{id}                 # Update task
+DELETE /api/v1/tasks/{id}                 # Delete task
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Task Comments
 
-## Laravel Sponsors
+```
+GET    /api/v1/tasks/{id}/comments        # List task comments
+POST   /api/v1/tasks/{id}/comments        # Create comment
+PUT    /api/v1/task-comments/{id}         # Update comment
+DELETE /api/v1/task-comments/{id}         # Delete comment
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## 🤝 Contributing
 
-### Premium Partners
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Make your changes
+4. Run tests and quality checks:
+   ```bash
+   php artisan test
+   ./vendor/bin/pint
+   ./vendor/bin/phpstan analyse
+   ```
+5. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+6. Push to the branch (`git push origin feature/amazing-feature`)
+7. Open a Pull Request
+
+### Commit Convention
+
+- `feat:` - New feature
+- `fix:` - Bug fix
+- `refactor:` - Code refactoring
+- `test:` - Test additions/modifications
+- `docs:` - Documentation changes
+- `style:` - Code style fixes (Pint)
+- `perf:` - Performance improvements
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 👨‍💻 Author
+
+Created by [Murat Köse](https://github.com/muratkose1126)
+
+---
+
+**Useful Links:**
+- [Laravel Documentation](https://laravel.com/docs)
+- [Laravel API Documentation](https://laravel.com/api)
+- [Pest Testing Framework](https://pestphp.com)
+- [Spatie Packages](https://spatie.be/open-source)
 
 - **[Vehikl](https://vehikl.com)**
 - **[Tighten Co.](https://tighten.co)**
