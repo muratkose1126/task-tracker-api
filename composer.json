@@ -17,6 +17,7 @@
         "spatie/laravel-medialibrary": "^11.17"
     },
     "require-dev": {
+        "darkaonline/l5-swagger": "*",
         "fakerphp/faker": "^1.23",
         "laravel/boost": "^1.6",
         "laravel/pail": "^1.2.2",

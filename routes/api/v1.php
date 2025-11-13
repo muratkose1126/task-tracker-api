@@ -8,6 +8,13 @@ use App\Http\Controllers\Api\V1\TaskCommentController;
 use App\Http\Controllers\Api\V1\TaskController;
 use Illuminate\Support\Facades\Route;
 
+// API Documentation
+Route::get('/docs', function () {
+    return view('swagger-ui', [
+        'spec' => json_decode(file_get_contents(storage_path('api-docs.yaml'))),
+    ]);
+})->name('docs');
+
 Route::prefix('v1')->as('v1.')->group(function () {
 
     Route::prefix('auth')->as('auth.')->group(function () {
