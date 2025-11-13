@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 // API Documentation
 Route::get('/docs', function () {
-    return view('swagger-ui', [
+    // Use the published L5-Swagger view
+    return view('vendor.l5-swagger.index', [
         'spec' => json_decode(file_get_contents(storage_path('api-docs.yaml'))),
     ]);
 })->name('docs');
