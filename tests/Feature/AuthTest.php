@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 it('can register a new user', function () {
-    $response = $this->postJson('/api/v1/auth/register', [
+    $response = $this->postJson('/api/auth/register', [
         'name' => 'Test User',
         'email' => 'test@example.com',
         'password' => 'password',
@@ -35,7 +35,7 @@ it('can login an existing user', function () {
         'password' => bcrypt($password = 'password'),
     ]);
 
-    $response = $this->postJson('/api/v1/auth/login', [
+    $response = $this->postJson('/api/auth/login', [
         'email' => $user->email,
         'password' => $password,
     ]);
@@ -56,7 +56,7 @@ it('can login an existing user', function () {
 it('cannot login with invalid credentials', function () {
     $user = User::factory()->create();
 
-    $response = $this->postJson('/api/v1/auth/login', [
+    $response = $this->postJson('/api/auth/login', [
         'email' => $user->email,
         'password' => 'wrongpassword',
     ]);
@@ -70,7 +70,7 @@ it('can get authenticated user info', function () {
     $token = $user->createToken('TestToken')->plainTextToken;
 
     $response = $this->withHeader('Authorization', 'Bearer '.$token)
-        ->getJson('/api/v1/auth/me');
+        ->getJson('/api/auth/me');
 
     $response->assertStatus(200)
         ->assertJsonStructure([
