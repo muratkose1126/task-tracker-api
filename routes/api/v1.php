@@ -11,7 +11,7 @@ Route::prefix('v1')->as('v1.')->group(function () {
     Route::apiResource('projects', ProjectController::class)
         ->middleware('auth:sanctum');
 
-    Route::apiResource('tasks', TaskController::class)
+    Route::apiResource('projects.tasks', TaskController::class)
         ->middleware('auth:sanctum');
 
     Route::apiResource('tasks.comments', TaskCommentController::class)

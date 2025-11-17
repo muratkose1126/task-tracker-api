@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\StoreTaskRequest;
 use App\Http\Requests\V1\UpdateTaskRequest;
 use App\Http\Resources\V1\TaskResource;
+use App\Models\Project;
 use App\Models\Task;
 use App\Services\V1\TaskService;
 use Illuminate\Http\Request;
@@ -23,11 +24,11 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request, Project $project)
     {
         Gate::authorize('viewAny', Task::class);
 
-        $tasks = Task::query()
+        $tasks = $project->tasks()
             ->when($request->status, fn ($q) => $q->where('status', $request->status))
             ->when($request->priority, fn ($q) => $q->where('priority', $request->priority))
             ->get();
@@ -38,9 +39,11 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTaskRequest $request)
+    public function store(StoreTaskRequest $request, Project $project)
     {
         $validated = $request->validated();
+        $validated['project_id'] = $project->id;
+        $validated['user_id'] = $request->user()->id;
 
         $task = $this->taskService->create($validated);
 
@@ -50,9 +53,14 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Task $task)
+    public function show(Project $project, Task $task)
     {
         Gate::authorize('view', $task);
+
+        // Ensure task belongs to project
+        if ($task->project_id !== $project->id) {
+            return response()->json(['message' => 'Task not found in this project'], 404);
+        }
 
         return new TaskResource($task);
     }
@@ -60,8 +68,13 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, Task $task)
+    public function update(UpdateTaskRequest $request, Project $project, Task $task)
     {
+        // Ensure task belongs to project
+        if ($task->project_id !== $project->id) {
+            return response()->json(['message' => 'Task not found in this project'], 404);
+        }
+
         $validated = $request->validated();
 
         $task = $this->taskService->update($task, $validated);
@@ -72,9 +85,15 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy(Project $project, Task $task)
     {
         Gate::authorize('delete', $task);
+
+        // Ensure task belongs to project
+        if ($task->project_id !== $project->id) {
+            return response()->json(['message' => 'Task not found in this project'], 404);
+        }
+
         $this->taskService->delete($task);
 
         return response()->noContent();

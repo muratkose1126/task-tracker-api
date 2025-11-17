@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Project;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -8,11 +9,13 @@ uses(RefreshDatabase::class);
 
 it('logs task creation', function () {
     $user = User::factory()->create();
+    $project = Project::factory()->create();
 
     $this->actingAs($user, 'sanctum');
 
     $task = Task::factory()->create([
         'user_id' => $user->id,
+        'project_id' => $project->id,
         'title' => 'Test Task',
     ]);
 
@@ -27,7 +30,11 @@ it('logs task creation', function () {
 
 it('logs task updates', function () {
     $user = User::factory()->create();
-    $task = Task::factory()->create(['user_id' => $user->id]);
+    $project = Project::factory()->create();
+    $task = Task::factory()->create([
+        'user_id' => $user->id,
+        'project_id' => $project->id,
+    ]);
 
     $this->actingAs($user, 'sanctum');
 
@@ -44,7 +51,11 @@ it('logs task updates', function () {
 
 it('logs task soft deletes', function () {
     $user = User::factory()->create();
-    $task = Task::factory()->create(['user_id' => $user->id]);
+    $project = Project::factory()->create();
+    $task = Task::factory()->create([
+        'user_id' => $user->id,
+        'project_id' => $project->id,
+    ]);
 
     $this->actingAs($user, 'sanctum');
 

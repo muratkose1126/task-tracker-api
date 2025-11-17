@@ -7,25 +7,25 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-it('can list all tasks', function () {
+it('can list all tasks for a project', function () {
     $user = User::factory()->create();
+    $project = Project::factory()->create();
     Task::factory()->count(3)->create([
         'user_id' => $user->id,
+        'project_id' => $project->id,
     ]);
 
-    $response = $this->actingAs($user, 'sanctum')->getJson('/api/v1/tasks');
+    $response = $this->actingAs($user, 'sanctum')->getJson("/api/v1/projects/{$project->id}/tasks");
 
     $response->assertStatus(200)
         ->assertJsonCount(3, 'data');
 });
 
-it('can create a new task', function () {
+it('can create a new task for a project', function () {
     $project = Project::factory()->create();
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user, 'sanctum')->postJson('/api/v1/tasks', [
-        'project_id' => $project->id,
-        'user_id' => $user->id,
+    $response = $this->actingAs($user, 'sanctum')->postJson("/api/v1/projects/{$project->id}/tasks", [
         'title' => 'Test Task',
         'description' => 'This is a test task',
     ]);
@@ -45,13 +45,17 @@ it('can create a new task', function () {
 
     $this->assertDatabaseHas('tasks', [
         'title' => 'Test Task',
+        'project_id' => $project->id,
     ]);
 });
 
-it('can show a task', function () {
-    $task = Task::factory()->create();
+it('can show a task from a project', function () {
+    $project = Project::factory()->create();
+    $task = Task::factory()->create([
+        'project_id' => $project->id,
+    ]);
 
-    $response = $this->actingAs($task->user, 'sanctum')->getJson("/api/v1/tasks/{$task->id}");
+    $response = $this->actingAs($task->user, 'sanctum')->getJson("/api/v1/projects/{$project->id}/tasks/{$task->id}");
 
     $response->assertStatus(200)
         ->assertJson([
@@ -62,10 +66,25 @@ it('can show a task', function () {
         ]);
 });
 
-it('can update a task', function () {
-    $task = Task::factory()->create();
+it('returns 404 when task does not belong to project', function () {
+    $project = Project::factory()->create();
+    $otherProject = Project::factory()->create();
+    $task = Task::factory()->create([
+        'project_id' => $otherProject->id,
+    ]);
 
-    $response = $this->actingAs($task->user, 'sanctum')->putJson("/api/v1/tasks/{$task->id}", [
+    $response = $this->actingAs($task->user, 'sanctum')->getJson("/api/v1/projects/{$project->id}/tasks/{$task->id}");
+
+    $response->assertStatus(404);
+});
+
+it('can update a task in a project', function () {
+    $project = Project::factory()->create();
+    $task = Task::factory()->create([
+        'project_id' => $project->id,
+    ]);
+
+    $response = $this->actingAs($task->user, 'sanctum')->putJson("/api/v1/projects/{$project->id}/tasks/{$task->id}", [
         'title' => 'Updated Task Title',
         'description' => 'Updated description',
     ]);
@@ -84,10 +103,13 @@ it('can update a task', function () {
     ]);
 });
 
-it('can delete a task', function () {
-    $task = Task::factory()->create();
+it('can delete a task from a project', function () {
+    $project = Project::factory()->create();
+    $task = Task::factory()->create([
+        'project_id' => $project->id,
+    ]);
 
-    $response = $this->actingAs($task->user, 'sanctum')->deleteJson("/api/v1/tasks/{$task->id}");
+    $response = $this->actingAs($task->user, 'sanctum')->deleteJson("/api/v1/projects/{$project->id}/tasks/{$task->id}");
 
     $response->assertStatus(204);
 
