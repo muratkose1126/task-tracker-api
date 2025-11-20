@@ -53,14 +53,9 @@ class TaskController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Project $project, Task $task)
+    public function show(Task $task)
     {
         Gate::authorize('view', $task);
-
-        // Ensure task belongs to project
-        if ($task->project_id !== $project->id) {
-            return response()->json(['message' => 'Task not found in this project'], 404);
-        }
 
         return new TaskResource($task);
     }
@@ -68,12 +63,9 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTaskRequest $request, Project $project, Task $task)
+    public function update(UpdateTaskRequest $request, Task $task)
     {
-        // Ensure task belongs to project
-        if ($task->project_id !== $project->id) {
-            return response()->json(['message' => 'Task not found in this project'], 404);
-        }
+        Gate::authorize('update', $task);
 
         $validated = $request->validated();
 
@@ -85,14 +77,9 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Project $project, Task $task)
+    public function destroy(Task $task)
     {
         Gate::authorize('delete', $task);
-
-        // Ensure task belongs to project
-        if ($task->project_id !== $project->id) {
-            return response()->json(['message' => 'Task not found in this project'], 404);
-        }
 
         $this->taskService->delete($task);
 

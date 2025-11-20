@@ -16,7 +16,7 @@ it('allows the owner to update their own task', function () {
     ]);
 
     $this->actingAs($user, 'sanctum')
-        ->putJson("/api/v1/projects/{$project->id}/tasks/{$task->id}", [
+        ->putJson("/api/v1/tasks/{$task->id}", [
             'title' => 'Updated title',
         ])
         ->assertStatus(200);
@@ -32,7 +32,7 @@ it('denies other users from updating the task', function () {
     ]);
 
     $this->actingAs($other, 'sanctum')
-        ->putJson("/api/v1/projects/{$project->id}/tasks/{$task->id}", [
+        ->putJson("/api/v1/tasks/{$task->id}", [
             'title' => 'Hacked!',
         ])
         ->assertStatus(403);
@@ -47,7 +47,7 @@ it('allows the owner to delete their own task', function () {
     ]);
 
     $this->actingAs($user, 'sanctum')
-        ->deleteJson("/api/v1/projects/{$project->id}/tasks/{$task->id}")
+        ->deleteJson("/api/v1/tasks/{$task->id}")
         ->assertStatus(204);
 });
 
@@ -61,6 +61,6 @@ it('denies other users from deleting the task', function () {
     ]);
 
     $this->actingAs($other, 'sanctum')
-        ->deleteJson("/api/v1/projects/{$project->id}/tasks/{$task->id}")
+        ->deleteJson("/api/v1/tasks/{$task->id}")
         ->assertStatus(403);
 });

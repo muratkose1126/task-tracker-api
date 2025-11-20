@@ -12,6 +12,7 @@ Route::prefix('v1')->as('v1.')->group(function () {
         ->middleware('auth:sanctum');
 
     Route::apiResource('projects.tasks', TaskController::class)
+        ->shallow()
         ->middleware('auth:sanctum');
 
     Route::apiResource('tasks.comments', TaskCommentController::class)
