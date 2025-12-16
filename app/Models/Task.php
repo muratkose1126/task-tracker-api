@@ -48,6 +48,11 @@ class Task extends Model implements HasMedia
         return $this->belongsTo(TaskList::class, 'list_id');
     }
 
+    public function taskList()
+    {
+        return $this->list();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

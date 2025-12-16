@@ -4,8 +4,6 @@ namespace App\Policies;
 
 use App\Models\TaskList;
 use App\Models\User;
-use App\Policies\SpacePolicy;
-use Illuminate\Auth\Access\Response;
 
 class TaskListPolicy
 {
@@ -23,7 +21,8 @@ class TaskListPolicy
     public function view(User $user, TaskList $taskList): bool
     {
         // Delegate to SpacePolicy
-        $spacePolicy = new SpacePolicy();
+        $spacePolicy = new SpacePolicy;
+
         return $spacePolicy->view($user, $taskList->space);
     }
 
@@ -41,8 +40,8 @@ class TaskListPolicy
     public function update(User $user, TaskList $taskList): bool
     {
         // Must be able to view the space
-        $spacePolicy = new SpacePolicy();
-        if (!$spacePolicy->view($user, $taskList->space)) {
+        $spacePolicy = new SpacePolicy;
+        if (! $spacePolicy->view($user, $taskList->space)) {
             return false;
         }
 
@@ -55,11 +54,13 @@ class TaskListPolicy
                 return true;
             }
             $member = $workspace->members()->where('user_id', $user->id)->first();
+
             return $member && in_array($member->role, ['admin']);
         }
 
         // Private space: space admin or editor
         $spaceMember = $space->members()->where('user_id', $user->id)->first();
+
         return $spaceMember && in_array($spaceMember->role, ['admin', 'editor']);
     }
 

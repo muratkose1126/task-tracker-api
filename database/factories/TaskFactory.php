@@ -86,4 +86,12 @@ class TaskFactory extends Factory
     {
         return $this->state(['user_id' => $user->id]);
     }
+
+    /**
+     * State for a task in a specific list.
+     */
+    public function forList(TaskList $list): static
+    {
+        return $this->state(['list_id' => $list->id]);
+    }
 }

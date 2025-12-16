@@ -13,6 +13,21 @@
 
 uses(Tests\TestCase::class)->in('Feature', 'Unit');
 
+uses(\Illuminate\Foundation\Testing\RefreshDatabase::class)->in('Feature', 'Unit');
+
+/*
+|--------------------------------------------------------------------------
+| Traits
+|--------------------------------------------------------------------------
+*/
+
+uses(
+    Tests\Traits\AuthenticatesUsers::class,
+    Tests\Traits\CreatesWorkspaceData::class,
+    Tests\Traits\AssertsPermissions::class,
+    Tests\Traits\AssertsJsonResponse::class,
+)->in('Feature', 'Unit');
+
 /*
 |--------------------------------------------------------------------------
 | Expectations
@@ -39,7 +54,4 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
-{
-    // ..
-}
+// Global helper function yok - Traits üzerinden çalışıyoruz

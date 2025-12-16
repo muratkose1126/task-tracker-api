@@ -2,14 +2,14 @@
 
 namespace Database\Seeders;
 
+use App\Models\Group;
+use App\Models\Space;
+use App\Models\SpaceMember;
+use App\Models\Task;
+use App\Models\TaskList;
 use App\Models\User;
 use App\Models\Workspace;
 use App\Models\WorkspaceMember;
-use App\Models\Space;
-use App\Models\SpaceMember;
-use App\Models\Group;
-use App\Models\TaskList;
-use App\Models\Task;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
         // Create workspaces
         $workspace1 = Workspace::create([
             'name' => 'Acme Inc',
-            'slug' => 'acme-inc-' . \Str::random(6),
+            'slug' => 'acme-inc-'.\Str::random(6),
             'owner_id' => $user->id,
             'description' => 'Main company workspace',
             'settings' => [],
@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
 
         $workspace2 = Workspace::create([
             'name' => 'Beta Team',
-            'slug' => 'beta-team-' . \Str::random(6),
+            'slug' => 'beta-team-'.\Str::random(6),
             'owner_id' => $user->id,
             'description' => 'Side project workspace',
             'settings' => [],

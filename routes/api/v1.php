@@ -1,12 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\V1\GroupController;
+use App\Http\Controllers\Api\V1\SpaceController;
 use App\Http\Controllers\Api\V1\TaskAttachmentController;
 use App\Http\Controllers\Api\V1\TaskCommentController;
 use App\Http\Controllers\Api\V1\TaskController;
-use App\Http\Controllers\Api\V1\WorkspaceController;
-use App\Http\Controllers\Api\V1\SpaceController;
-use App\Http\Controllers\Api\V1\GroupController;
 use App\Http\Controllers\Api\V1\TaskListController;
+use App\Http\Controllers\Api\V1\WorkspaceController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->as('v1.')->group(function () {

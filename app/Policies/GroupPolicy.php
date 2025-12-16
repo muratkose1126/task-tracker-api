@@ -4,8 +4,6 @@ namespace App\Policies;
 
 use App\Models\Group;
 use App\Models\User;
-use App\Policies\SpacePolicy;
-use Illuminate\Auth\Access\Response;
 
 class GroupPolicy
 {
@@ -23,7 +21,8 @@ class GroupPolicy
     public function view(User $user, Group $group): bool
     {
         // Delegate to SpacePolicy
-        $spacePolicy = new SpacePolicy();
+        $spacePolicy = new SpacePolicy;
+
         return $spacePolicy->view($user, $group->space);
     }
 
@@ -41,8 +40,8 @@ class GroupPolicy
     public function update(User $user, Group $group): bool
     {
         // Must be able to view the space
-        $spacePolicy = new SpacePolicy();
-        if (!$spacePolicy->view($user, $group->space)) {
+        $spacePolicy = new SpacePolicy;
+        if (! $spacePolicy->view($user, $group->space)) {
             return false;
         }
 
@@ -55,11 +54,13 @@ class GroupPolicy
                 return true;
             }
             $member = $workspace->members()->where('user_id', $user->id)->first();
+
             return $member && in_array($member->role, ['admin']);
         }
 
         // Private space: space admin or editor
         $spaceMember = $space->members()->where('user_id', $user->id)->first();
+
         return $spaceMember && in_array($spaceMember->role, ['admin', 'editor']);
     }
 

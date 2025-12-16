@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TaskList extends Model
 {
+    use HasFactory;
+
     protected $table = 'lists';
 
     protected $fillable = [
@@ -36,5 +39,17 @@ class TaskList extends Model
     public function tasks(): HasMany
     {
         return $this->hasMany(Task::class, 'list_id');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($list) {
+            // Soft delete all related tasks
+            foreach ($list->tasks()->get() as $task) {
+                $task->delete();
+            }
+        });
     }
 }

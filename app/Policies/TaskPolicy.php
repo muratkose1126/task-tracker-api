@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Task;
 use App\Models\User;
-use App\Policies\SpacePolicy;
 
 class TaskPolicy
 {
@@ -28,16 +27,17 @@ class TaskPolicy
 
         // Check space access via list
         $list = $task->list;
-        if (!$list) {
+        if (! $list) {
             return false;
         }
 
         $space = $list->space;
-        if (!$space) {
+        if (! $space) {
             return false;
         }
 
-        $spacePolicy = new SpacePolicy();
+        $spacePolicy = new SpacePolicy;
+
         return $spacePolicy->view($user, $space);
     }
 
@@ -61,14 +61,14 @@ class TaskPolicy
 
         // Check space permissions
         $list = $task->list;
-        if (!$list) {
+        if (! $list) {
             return false;
         }
 
         $space = $list->space;
-        $spacePolicy = new SpacePolicy();
+        $spacePolicy = new SpacePolicy;
 
-        if (!$spacePolicy->view($user, $space)) {
+        if (! $spacePolicy->view($user, $space)) {
             return false;
         }
 
@@ -79,11 +79,13 @@ class TaskPolicy
                 return true;
             }
             $member = $workspace->members()->where('user_id', $user->id)->first();
+
             return $member && in_array($member->role, ['admin']);
         }
 
         // Private space: space admin or editor
         $spaceMember = $space->members()->where('user_id', $user->id)->first();
+
         return $spaceMember && in_array($spaceMember->role, ['admin', 'editor']);
     }
 

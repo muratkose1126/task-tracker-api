@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Models\TaskList;
 use App\Models\Space;
+use App\Models\TaskList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 

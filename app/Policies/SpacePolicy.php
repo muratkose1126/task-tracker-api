@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Space;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class SpacePolicy
 {
@@ -23,8 +22,13 @@ class SpacePolicy
     {
         // Must be workspace member first
         $workspace = $space->workspace;
-        if ($workspace->owner_id !== $user->id && !$workspace->members()->where('user_id', $user->id)->exists()) {
+        if ($workspace->owner_id !== $user->id && ! $workspace->members()->where('user_id', $user->id)->exists()) {
             return false;
+        }
+
+        // Workspace owner can always view any space
+        if ($workspace->owner_id === $user->id) {
+            return true;
         }
 
         // Public space: all workspace members can view
@@ -50,7 +54,7 @@ class SpacePolicy
     public function update(User $user, Space $space): bool
     {
         // Must be able to view first
-        if (!$this->view($user, $space)) {
+        if (! $this->view($user, $space)) {
             return false;
         }
 
@@ -61,11 +65,13 @@ class SpacePolicy
                 return true;
             }
             $member = $workspace->members()->where('user_id', $user->id)->first();
+
             return $member && in_array($member->role, ['admin']);
         }
 
         // Private space: space admin
         $spaceMember = $space->members()->where('user_id', $user->id)->first();
+
         return $spaceMember && $spaceMember->role === 'admin';
     }
 

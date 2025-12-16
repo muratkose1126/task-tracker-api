@@ -48,12 +48,12 @@ class TaskCommentPolicy
 
         // Space member'ları güncelleyebilir
         $list = $comment->task->list;
-        if (!$list) {
+        if (! $list) {
             return false;
         }
 
         $space = $list->space;
-        if (!$space) {
+        if (! $space) {
             return false;
         }
 
@@ -76,12 +76,12 @@ class TaskCommentPolicy
 
         // Space member'ları silebilir
         $list = $comment->task->list;
-        if (!$list) {
+        if (! $list) {
             return false;
         }
 
         $space = $list->space;
-        if (!$space) {
+        if (! $space) {
             return false;
         }
 

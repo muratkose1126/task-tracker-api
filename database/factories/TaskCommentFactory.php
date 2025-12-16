@@ -58,4 +58,20 @@ class TaskCommentFactory extends Factory
     {
         return $this->state(['comment' => $this->faker->paragraph()]);
     }
+
+    /**
+     * State for an update type comment.
+     */
+    public function asUpdate(): static
+    {
+        return $this->state(['type' => TaskCommentType::UPDATE]);
+    }
+
+    /**
+     * State for a reminder type comment.
+     */
+    public function asReminder(): static
+    {
+        return $this->state(['type' => TaskCommentType::REMINDER]);
+    }
 }

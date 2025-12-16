@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Space;
+use App\Models\Task;
 use App\Models\Workspace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use App\Models\Task;
 
 class SpaceController extends Controller
 {
@@ -21,12 +21,12 @@ class SpaceController extends Controller
         $query = $workspace->spaces();
 
         // Filter by visibility (public spaces or private spaces where user is member)
-        if (!$workspace->members()->where('user_id', $request->user()->id)->exists()) {
+        if (! $workspace->members()->where('user_id', $request->user()->id)->exists()) {
             $query->where('visibility', 'public');
         } else {
             $query->where(function ($q) use ($request) {
                 $q->where('visibility', 'public')
-                  ->orWhereHas('members', fn($q2) => $q2->where('user_id', $request->user()->id));
+                    ->orWhereHas('members', fn ($q2) => $q2->where('user_id', $request->user()->id));
             });
         }
 
@@ -68,7 +68,7 @@ class SpaceController extends Controller
     {
         Gate::authorize('view', $space);
 
-        return response()->json(['data' => $space->load(['workspace', 'groups', 'lists.tasks', 'members.user'])]);
+        return response()->json(['data' => $space->load(['workspace', 'groups', 'lists.tasks', 'members'])]);
     }
 
     /**

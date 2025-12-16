@@ -51,4 +51,26 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Relationships
+
+    public function workspaces()
+    {
+        return $this->hasMany(Workspace::class, 'owner_id');
+    }
+
+    public function workspaceMembers()
+    {
+        return $this->hasMany(WorkspaceMember::class);
+    }
+
+    public function tasks()
+    {
+        return $this->hasMany(Task::class);
+    }
+
+    public function taskComments()
+    {
+        return $this->hasMany(TaskComment::class);
+    }
 }

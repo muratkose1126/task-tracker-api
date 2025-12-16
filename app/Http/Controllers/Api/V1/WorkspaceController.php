@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Workspace;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Str;
 
 class WorkspaceController extends Controller
 {
@@ -18,8 +17,8 @@ class WorkspaceController extends Controller
         $workspaces = Workspace::whereHas('members', function ($query) use ($request) {
             $query->where('user_id', $request->user()->id);
         })->orWhere('owner_id', $request->user()->id)
-          ->with(['owner:id,name,email', 'spaces'])
-          ->get();
+            ->with(['owner:id,name,email', 'spaces'])
+            ->get();
 
         // Attach last_visited_path for each workspace
         $workspaces->each(function ($workspace) use ($request) {
@@ -39,21 +38,19 @@ class WorkspaceController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:workspaces,slug',
             'description' => 'nullable|string',
         ]);
 
         $workspace = Workspace::create([
             'name' => $validated['name'],
-            'slug' => Str::slug($validated['name']) . '-' . Str::random(6),
+            'slug' => $validated['slug'],
             'owner_id' => $request->user()->id,
             'description' => $validated['description'] ?? null,
         ]);
 
         // Auto-add owner as workspace member
-        $workspace->members()->create([
-            'user_id' => $request->user()->id,
-            'role' => 'owner',
-        ]);
+        $workspace->members()->attach($request->user()->id, ['role' => 'owner']);
 
         return response()->json(['data' => $workspace->load('owner')], 201);
     }

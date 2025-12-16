@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Space extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'workspace_id',
         'name',
@@ -25,9 +29,11 @@ class Space extends Model
         return $this->belongsTo(Workspace::class);
     }
 
-    public function members(): HasMany
+    public function members(): BelongsToMany
     {
-        return $this->hasMany(SpaceMember::class);
+        return $this->belongsToMany(User::class, 'space_members', 'space_id', 'user_id')
+            ->withPivot(['role'])
+            ->withTimestamps();
     }
 
     public function groups(): HasMany

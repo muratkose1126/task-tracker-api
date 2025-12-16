@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\User;
 use App\Models\Workspace;
-use Illuminate\Auth\Access\Response;
 
 class WorkspacePolicy
 {
@@ -45,7 +44,8 @@ class WorkspacePolicy
         }
 
         $member = $workspace->members()->where('user_id', $user->id)->first();
-        return $member && in_array($member->role, ['admin']);
+
+        return $member && $member->pivot->role === 'admin';
     }
 
     /**
