@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use App\Enums\ProjectRole;
 use App\Models\TaskComment;
 use App\Models\User;
 
@@ -37,20 +36,32 @@ class TaskCommentPolicy
      */
     public function update(User $user, TaskComment $comment): bool
     {
-        // Comment sahibi veya proje sahibi comment'i güncelleyebilir
+        // Comment sahibi veya task owner'ı güncelleyebilir
         if ($user->id === $comment->user_id) {
             return true;
         }
 
-        $project = $comment->task->project;
-        if (! $project) {
+        // Task owner'ı güncelleyebilir
+        if ($user->id === $comment->task->user_id) {
+            return true;
+        }
+
+        // Space member'ları güncelleyebilir
+        $list = $comment->task->list;
+        if (!$list) {
             return false;
         }
 
-        return $project->members()
+        $space = $list->space;
+        if (!$space) {
+            return false;
+        }
+
+        $spaceMember = $space->members()
             ->where('user_id', $user->id)
-            ->where('role', ProjectRole::OWNER)
-            ->exists();
+            ->first();
+
+        return $spaceMember && in_array($spaceMember->role, ['admin', 'editor']);
     }
 
     /**
@@ -58,24 +69,27 @@ class TaskCommentPolicy
      */
     public function delete(User $user, TaskComment $comment): bool
     {
-        // Task sahibi, comment sahibi veya proje sahibi silebilir
-        if ($user->id === $comment->user_id) {
+        // Task sahibi veya comment sahibi silebilir
+        if ($user->id === $comment->user_id || $user->id === $comment->task->user_id) {
             return true;
         }
 
-        if ($user->id === $comment->task->user_id) {
-            return true;
-        }
-
-        $project = $comment->task->project;
-        if (! $project) {
+        // Space member'ları silebilir
+        $list = $comment->task->list;
+        if (!$list) {
             return false;
         }
 
-        return $project->members()
+        $space = $list->space;
+        if (!$space) {
+            return false;
+        }
+
+        $spaceMember = $space->members()
             ->where('user_id', $user->id)
-            ->where('role', ProjectRole::OWNER)
-            ->exists();
+            ->first();
+
+        return $spaceMember && in_array($spaceMember->role, ['admin']);
     }
 
     /**

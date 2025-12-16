@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Task;
+use App\Models\Space;
 use App\Models\User;
-use App\Policies\SpacePolicy;
+use Illuminate\Auth\Access\Response;
 
-class TaskPolicy
+class SpacePolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,26 +19,21 @@ class TaskPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Task $task): bool
+    public function view(User $user, Space $space): bool
     {
-        // Owner of the task can view
-        if ($task->user_id === $user->id) {
+        // Must be workspace member first
+        $workspace = $space->workspace;
+        if ($workspace->owner_id !== $user->id && !$workspace->members()->where('user_id', $user->id)->exists()) {
+            return false;
+        }
+
+        // Public space: all workspace members can view
+        if ($space->visibility === 'public') {
             return true;
         }
 
-        // Check space access via list
-        $list = $task->list;
-        if (!$list) {
-            return false;
-        }
-
-        $space = $list->space;
-        if (!$space) {
-            return false;
-        }
-
-        $spacePolicy = new SpacePolicy();
-        return $spacePolicy->view($user, $space);
+        // Private space: must be space member
+        return $space->members()->where('user_id', $user->id)->exists();
     }
 
     /**
@@ -52,23 +47,10 @@ class TaskPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Task $task): bool
+    public function update(User $user, Space $space): bool
     {
-        // Task owner can update
-        if ($task->user_id === $user->id) {
-            return true;
-        }
-
-        // Check space permissions
-        $list = $task->list;
-        if (!$list) {
-            return false;
-        }
-
-        $space = $list->space;
-        $spacePolicy = new SpacePolicy();
-
-        if (!$spacePolicy->view($user, $space)) {
+        // Must be able to view first
+        if (!$this->view($user, $space)) {
             return false;
         }
 
@@ -82,33 +64,33 @@ class TaskPolicy
             return $member && in_array($member->role, ['admin']);
         }
 
-        // Private space: space admin or editor
+        // Private space: space admin
         $spaceMember = $space->members()->where('user_id', $user->id)->first();
-        return $spaceMember && in_array($spaceMember->role, ['admin', 'editor']);
+        return $spaceMember && $spaceMember->role === 'admin';
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Task $task): bool
+    public function delete(User $user, Space $space): bool
     {
         // Same logic as update
-        return $this->update($user, $task);
+        return $this->update($user, $space);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Task $task): bool
+    public function restore(User $user, Space $space): bool
     {
-        return $task->user_id === $user->id;
+        return false;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Task $task): bool
+    public function forceDelete(User $user, Space $space): bool
     {
-        return $task->user_id === $user->id;
+        return false;
     }
 }
