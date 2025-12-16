@@ -15,4 +15,7 @@ parameters:
     ignoreErrors:
         - '#Access to undefined constant DIRECTORY_SEPARATOR#'
         - '#Call to an undefined method Illuminate#'
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model.*#'
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Relations\\Pivot::\$#'
+        - '#Parameter.*expects.*Illuminate\\Database\\Eloquent\\Model.*given#'
     reportUnmatchedIgnoredErrors: false

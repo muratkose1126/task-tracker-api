@@ -7,6 +7,7 @@ use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\MediaLibrary\HasMedia;
@@ -43,17 +44,17 @@ class Task extends Model implements HasMedia
             ->setDescriptionForEvent(fn (string $eventName) => $eventName);
     }
 
-    public function list()
+    public function list(): BelongsTo
     {
         return $this->belongsTo(TaskList::class, 'list_id');
     }
 
-    public function taskList()
+    public function taskList(): BelongsTo
     {
         return $this->list();
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
