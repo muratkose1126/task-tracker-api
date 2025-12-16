@@ -1,52 +1,16 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Call to an undefined static method App\\Models\\User\:\:create\(\)\.$#'
-			identifier: staticMethod.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/AuthController.php
-
-		-
-			message: '#^Call to an undefined static method App\\Models\\User\:\:where\(\)\.$#'
-			identifier: staticMethod.notFound
-			count: 1
-			path: app/Http/Controllers/Api/V1/AuthController.php
-
-		-
-			message: '#^Call to static method authorize\(\) on an unknown class Gate\.$#'
-			identifier: class.notFound
-			count: 3
-			path: app/Http/Controllers/Api/V1/ProjectController.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Project\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: app/Http/Controllers/Api/V1/ProjectMemberController.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\ProjectMember\:\:\$project_id\.$#'
-			identifier: property.notFound
-			count: 3
-			path: app/Http/Controllers/Api/V1/ProjectMemberController.php
-
-		-
-			message: '#^Access to an undefined property Spatie\\MediaLibrary\\MediaCollections\\Models\\Media\:\:\$model\.$#'
+			message: '#^Access to an undefined property App\\Models\\Workspace\:\:\$last_visited_path\.$#'
 			identifier: property.notFound
 			count: 1
-			path: app/Http/Controllers/Api/V1/TaskAttachmentController.php
+			path: app/Http/Controllers/Api/V1/WorkspaceController.php
 
 		-
-			message: '#^Access to an undefined property Illuminate\\Http\\Request\:\:\$priority\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$last_visited_path\.$#'
 			identifier: property.notFound
-			count: 2
-			path: app/Http/Controllers/Api/V1/TaskController.php
-
-		-
-			message: '#^Access to an undefined property Illuminate\\Http\\Request\:\:\$status\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Http/Controllers/Api/V1/TaskController.php
+			count: 1
+			path: app/Http/Controllers/Api/V1/WorkspaceController.php
 
 		-
 			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\MediaResource\:\:\$created_at\.$#'
@@ -83,72 +47,6 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: app/Http/Resources/V1/MediaResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\ProjectMemberResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/V1/ProjectMemberResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\ProjectMemberResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/V1/ProjectMemberResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\ProjectMemberResource\:\:\$role\.$#'
-			identifier: property.notFound
-			count: 2
-			path: app/Http/Resources/V1/ProjectMemberResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\ProjectMemberResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/V1/ProjectMemberResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\ProjectMemberResource\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/V1/ProjectMemberResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\ProjectResource\:\:\$created_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/V1/ProjectResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\ProjectResource\:\:\$deleted_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/V1/ProjectResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\ProjectResource\:\:\$description\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/V1/ProjectResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\ProjectResource\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/V1/ProjectResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\ProjectResource\:\:\$name\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/V1/ProjectResource.php
-
-		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\ProjectResource\:\:\$updated_at\.$#'
-			identifier: property.notFound
-			count: 1
-			path: app/Http/Resources/V1/ProjectResource.php
 
 		-
 			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\TaskCommentResource\:\:\$comment\.$#'
@@ -223,13 +121,13 @@ parameters:
 			path: app/Http/Resources/V1/TaskResource.php
 
 		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\TaskResource\:\:\$priority\.$#'
+			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\TaskResource\:\:\$list_id\.$#'
 			identifier: property.notFound
 			count: 1
 			path: app/Http/Resources/V1/TaskResource.php
 
 		-
-			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\TaskResource\:\:\$project_id\.$#'
+			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\TaskResource\:\:\$priority\.$#'
 			identifier: property.notFound
 			count: 1
 			path: app/Http/Resources/V1/TaskResource.php
@@ -255,6 +153,12 @@ parameters:
 		-
 			message: '#^Access to an undefined property App\\Http\\Resources\\V1\\TaskResource\:\:\$user_id\.$#'
 			identifier: property.notFound
+			count: 1
+			path: app/Http/Resources/V1/TaskResource.php
+
+		-
+			message: '#^Instantiated class App\\Http\\Resources\\V1\\TaskListResource not found\.$#'
+			identifier: class.notFound
 			count: 1
 			path: app/Http/Resources/V1/TaskResource.php
 
@@ -289,97 +193,73 @@ parameters:
 			path: app/Http/Resources/V1/UserResource.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\User\:\:\$id\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$visibility\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/FolderPolicy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$workspace\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/FolderPolicy.php
+
+		-
+			message: '#^Parameter \#2 \$space of method App\\Policies\\SpacePolicy\:\:view\(\) expects App\\Models\\Space, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Policies/FolderPolicy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$owner_id\.$#'
 			identifier: property.notFound
 			count: 2
-			path: app/Policies/ProjectPolicy.php
+			path: app/Policies/SpacePolicy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$role\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/SpacePolicy.php
 
 		-
 			message: '#^Access to an undefined property App\\Models\\TaskComment\:\:\$task\.$#'
 			identifier: property.notFound
-			count: 6
+			count: 7
 			path: app/Policies/TaskCommentPolicy.php
 
 		-
-			message: '#^Access to an undefined property App\\Models\\TaskComment\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 5
-			path: app/Policies/TaskCommentPolicy.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\User\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 11
-			path: app/Policies/TaskCommentPolicy.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Task\:\:\$project\.$#'
-			identifier: property.notFound
-			count: 3
-			path: app/Policies/TaskPolicy.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Task\:\:\$user_id\.$#'
-			identifier: property.notFound
-			count: 5
-			path: app/Policies/TaskPolicy.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\User\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 8
-			path: app/Policies/TaskPolicy.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\User\:\:\$id\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$visibility\.$#'
 			identifier: property.notFound
 			count: 1
-			path: app/Services/V1/ProjectService.php
+			path: app/Policies/TaskListPolicy.php
 
 		-
-			message: '#^Call to an undefined static method App\\Models\\Project\:\:create\(\)\.$#'
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$workspace\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/TaskListPolicy.php
+
+		-
+			message: '#^Parameter \#2 \$space of method App\\Policies\\SpacePolicy\:\:view\(\) expects App\\Models\\Space, Illuminate\\Database\\Eloquent\\Model\|null given\.$#'
+			identifier: argument.type
+			count: 2
+			path: app/Policies/TaskListPolicy.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Task\:\:\$list\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Policies/TaskPolicy.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$role\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Policies/WorkspacePolicy.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\TaskList\:\:factory\(\)\.$#'
 			identifier: staticMethod.notFound
-			count: 1
-			path: app/Services/V1/ProjectService.php
-
-		-
-			message: '#^Call to an undefined static method App\\Models\\Task\:\:create\(\)\.$#'
-			identifier: staticMethod.notFound
-			count: 1
-			path: app/Services/V1/TaskService.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Project\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: database/factories/ProjectMemberFactory.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\User\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: database/factories/ProjectMemberFactory.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Task\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: database/factories/TaskCommentFactory.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\User\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: database/factories/TaskCommentFactory.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\Project\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: database/factories/TaskFactory.php
-
-		-
-			message: '#^Access to an undefined property App\\Models\\User\:\:\$id\.$#'
-			identifier: property.notFound
 			count: 1
 			path: database/factories/TaskFactory.php
