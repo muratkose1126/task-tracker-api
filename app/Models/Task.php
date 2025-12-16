@@ -19,7 +19,7 @@ class Task extends Model implements HasMedia
     use LogsActivity;
 
     protected $fillable = [
-        'project_id',
+        'list_id',
         'user_id',
         'title',
         'description',
@@ -43,9 +43,9 @@ class Task extends Model implements HasMedia
             ->setDescriptionForEvent(fn (string $eventName) => $eventName);
     }
 
-    public function project()
+    public function list()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(TaskList::class, 'list_id');
     }
 
     public function user()
