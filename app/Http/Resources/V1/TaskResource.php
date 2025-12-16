@@ -16,7 +16,7 @@ class TaskResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'project_id' => $this->project_id,
+            'list_id' => $this->list_id,
             'user_id' => $this->user_id,
             'title' => $this->title,
             'description' => $this->description,
@@ -27,7 +27,7 @@ class TaskResource extends JsonResource
             'updated_at' => $this->updated_at?->toISOString(),
             'deleted_at' => $this->deleted_at?->toISOString(),
 
-            'project' => new ProjectResource($this->whenLoaded('project')),
+            'list' => new TaskListResource($this->whenLoaded('list')),
             'user' => new UserResource($this->whenLoaded('user')),
 
             'comments' => TaskCommentResource::collection($this->whenLoaded('comments')),

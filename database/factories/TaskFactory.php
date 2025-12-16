@@ -4,7 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
-use App\Models\Project;
+use App\Models\TaskList;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -21,7 +21,7 @@ class TaskFactory extends Factory
     public function definition(): array
     {
         return [
-            'project_id' => Project::factory(),
+            'list_id' => TaskList::factory(),
             'user_id' => User::factory(),
             'title' => $this->faker->words(4, true),
             'description' => $this->faker->paragraph(),
@@ -85,13 +85,5 @@ class TaskFactory extends Factory
     public function forUser(User $user): static
     {
         return $this->state(['user_id' => $user->id]);
-    }
-
-    /**
-     * State for a task in a specific project.
-     */
-    public function forProject(Project $project): static
-    {
-        return $this->state(['project_id' => $project->id]);
     }
 }
