@@ -61,7 +61,7 @@ class TaskCommentPolicy
             ->where('user_id', $user->id)
             ->first();
 
-        return $spaceMember && in_array($spaceMember->role, ['admin', 'editor']);
+        return $spaceMember && in_array($spaceMember->pivot->role, ['admin', 'editor']);
     }
 
     /**
@@ -89,7 +89,7 @@ class TaskCommentPolicy
             ->where('user_id', $user->id)
             ->first();
 
-        return $spaceMember && in_array($spaceMember->role, ['admin']);
+        return $spaceMember && in_array($spaceMember->pivot->role, ['admin']);
     }
 
     /**

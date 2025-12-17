@@ -66,13 +66,13 @@ class SpacePolicy
             }
             $member = $workspace->members()->where('user_id', $user->id)->first();
 
-            return $member && in_array($member->role, ['admin']);
+            return $member && in_array($member->pivot->role, ['admin']);
         }
 
         // Private space: space admin
         $spaceMember = $space->members()->where('user_id', $user->id)->first();
 
-        return $spaceMember && $spaceMember->role === 'admin';
+        return $spaceMember && in_array($spaceMember->pivot->role, ['admin']);
     }
 
     /**

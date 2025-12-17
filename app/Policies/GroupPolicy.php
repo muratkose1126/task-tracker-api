@@ -55,13 +55,13 @@ class GroupPolicy
             }
             $member = $workspace->members()->where('user_id', $user->id)->first();
 
-            return $member && in_array($member->role, ['admin']);
+            return $member && in_array($member->pivot->role, ['admin']);
         }
 
         // Private space: space admin or editor
         $spaceMember = $space->members()->where('user_id', $user->id)->first();
 
-        return $spaceMember && in_array($spaceMember->role, ['admin', 'editor']);
+        return $spaceMember && in_array($spaceMember->pivot->role, ['admin', 'editor']);
     }
 
     /**
